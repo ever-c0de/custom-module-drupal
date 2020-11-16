@@ -1,0 +1,16 @@
+ever.form:
+  path: '/module-page'
+  defaults:
+    _form:  '\Drupal\ever\Form\EverForm'
+    _title: 'Ever Module'
+  requirements:
+    _permission: 'access content'
+
+ever.admin_settings:
+  path: '/admin/config/ever'
+  defaults:
+    _form:  '\Drupal\ever\Form\EverSettingsForm'
+    _title: 'Settings for Ever Module'
+  requirements:
+    _permission: 'access content'
+

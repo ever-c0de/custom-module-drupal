@@ -1,0 +1,8 @@
+name: Ever Module
+type: module
+description: My first custom module.
+core: 8.x
+core_version_requirement: ^8 || ^9
+configure: ever.admin_settings
+dependencies:
+  - drupal:node

@@ -1,0 +1,7 @@
+# Define default links for this module.
+ever.form:
+  title: Ever Module
+  description: Ever first module.
+  route_name: ever.form
+  expanded: TRUE
+

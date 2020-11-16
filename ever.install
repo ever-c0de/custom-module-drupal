@@ -1,0 +1,81 @@
+<?php
+
+/**
+ * @return mixed
+ * Implements hook_schema()
+ */
+function ever_schema() {
+
+  # Database example
+  $schema['ever'] = array(                   // Название таблицы
+    'description' => 'Database for ever module',            // Описание таблицы
+    'fields' => array(                              // Массив с колонками таблицы
+      'id' => array(                                // Название колонки
+        'description' => 'ID',                      // Описание колонки
+        'type' => 'serial',                         // Тип данных
+        'unsigned' => TRUE,                         // Unsigned, по умолчанию FALSE
+        'not null' => TRUE,                         // Проверка на 0
+      ),
+      'name' => array(
+        'description' => 'User Name',
+        'type' => 'varchar',
+        'length' => 101,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'email' => array(
+        'description' => 'User email',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'tel' => array(
+        'description' => 'User phone number',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'comment' => array(
+        'description' => 'User comment',
+        'type' => 'varchar',
+        'length' => 600,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'avatar-dir' => array(
+        'description' => 'User avatar dir',
+        'type' => 'varchar',
+        'length' => 600,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'photo-dir' => array(
+        'description' => 'User photo dir',
+        'type' => 'varchar',
+        'length' => 600,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'timestamp' => array(
+        'description' => 'Timestamp',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('id'),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function ever_uninstall() {
+  # Remove table
+  \Drupal::state()->delete('ever.ever');
+}
