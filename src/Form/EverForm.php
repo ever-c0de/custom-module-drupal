@@ -31,7 +31,7 @@ class EverForm extends FormBase {
    * {@inheritdoc}.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-
+    \Drupal::messenger()->deleteByType('error');
     $form['name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Your name'),
@@ -43,12 +43,14 @@ class EverForm extends FormBase {
       '#type' => 'email',
       '#title' => 'Email address',
       '#required' => TRUE,
+      '#maxlength' => 100,
     ];
 
     $form['phone_number'] = [
       '#type' => 'tel',
       '#title' => $this->t('Your phone number'),
       '#required' => TRUE,
+      '#maxlength' => 13,
     ];
 
 
@@ -56,6 +58,7 @@ class EverForm extends FormBase {
       '#type' => 'textarea',
       '#title' => $this->t('Your comment'),
       '#resizable' => FALSE,
+      '#maxlength' => 500,
       '#cols' => 10,
       '#rows' => 4,
     ];
@@ -111,8 +114,10 @@ class EverForm extends FormBase {
    * {@inheritdoc}
    */
   public function ajaxSubmitCallback(array &$form, FormStateInterface $form_state) {
+    $errors = $form_state->getErrors();
     $ajax_response = new AjaxResponse();
-    if (\Drupal::messenger()->messagesByType('error') === 0) {
+
+    if (count($errors) === 0) {
       \Drupal::messenger()->deleteByType('error');
       $ajax_response->addCommand(new RedirectCommand('http://ever.loc/module-page'));
     }
@@ -138,10 +143,10 @@ class EverForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    \Drupal::messenger()->deleteByType('error');
     if (strlen($form_state->getValue('name')) < 2) {
-      \Drupal::messenger()->addError('Name is too short.');
+      $form_state->setErrorByName('name', 'Name need to be longer');
     }
-
   }
 
   /**
@@ -154,7 +159,13 @@ class EverForm extends FormBase {
     \Drupal::messenger()->addMessage($this->t('Thank you for feedback, @name',
       ['@name' => $form_state->getValue('name')]));
 
-    $photo = $form_state->getValue('avatar_file');
+    $entry = [
+      'name' => $form_state->getValue('name'),
+      'surname' => $form_state->getValue('surname'),
+      'age' => $form_state->getValue('age'),
+      'uid' => $account->id(),
+    ];
+/*  $photo = $form_state->getValue('avatar_file');
     $file = File::load($photo[0]);
     $file->setPermanent();
     $file->save();
@@ -162,7 +173,7 @@ class EverForm extends FormBase {
     $photo = $form_state->getValue('comment_photo');
     $file = File::load($photo[0]);
     $file->setPermanent();
-    $file->save();
+    $file->save();*/
   }
 
 }

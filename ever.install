@@ -7,67 +7,67 @@
 function ever_schema() {
 
   # Database example
-  $schema['ever'] = array(                   // Название таблицы
+  $schema['ever'] = [                   // Название таблицы
     'description' => 'Database for ever module',            // Описание таблицы
-    'fields' => array(                              // Массив с колонками таблицы
-      'id' => array(                                // Название колонки
+    'fields' => [                              // Массив с колонками таблицы
+      'id' => [                                // Название колонки
         'description' => 'ID',                      // Описание колонки
         'type' => 'serial',                         // Тип данных
         'unsigned' => TRUE,                         // Unsigned, по умолчанию FALSE
         'not null' => TRUE,                         // Проверка на 0
-      ),
-      'name' => array(
+      ],
+      'name' => [
         'description' => 'User Name',
         'type' => 'varchar',
         'length' => 101,
         'not null' => TRUE,
         'default' => '',
-      ),
-      'email' => array(
+      ],
+      'email' => [
         'description' => 'User email',
         'type' => 'varchar',
         'length' => 100,
         'not null' => TRUE,
         'default' => '',
-      ),
-      'tel' => array(
+      ],
+      'tel' => [
         'description' => 'User phone number',
         'type' => 'varchar',
         'length' => 100,
         'not null' => TRUE,
         'default' => '',
-      ),
-      'comment' => array(
+      ],
+      'comment' => [
         'description' => 'User comment',
         'type' => 'varchar',
         'length' => 600,
         'not null' => TRUE,
         'default' => '',
-      ),
-      'avatar-dir' => array(
+      ],
+      'avatar-dir' => [
         'description' => 'User avatar dir',
         'type' => 'varchar',
         'length' => 600,
         'not null' => TRUE,
         'default' => '',
-      ),
-      'photo-dir' => array(
+      ],
+      'photo-dir' => [
         'description' => 'User photo dir',
         'type' => 'varchar',
         'length' => 600,
         'not null' => TRUE,
         'default' => '',
-      ),
-      'timestamp' => array(
+      ],
+      'timestamp' => [
         'description' => 'Timestamp',
         'type' => 'int',
         'unsigned' => TRUE,
         'not null' => TRUE,
         'default' => 0,
-      ),
-    ),
-    'primary key' => array('id'),
-  );
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
 
   return $schema;
 }
