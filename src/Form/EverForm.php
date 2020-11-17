@@ -35,6 +35,7 @@ class EverForm extends FormBase {
     $form['name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Your name'),
+      '#description'  => t("Your name can't be longer than 100 characters."),
       '#maxlength' => 100,
       '#required' => TRUE,
     ];
@@ -42,6 +43,7 @@ class EverForm extends FormBase {
     $form['email'] = [
       '#type' => 'email',
       '#title' => 'Email address',
+      '#description'  => t("Email needs to start with letter or number."),
       '#required' => TRUE,
       '#maxlength' => 100,
     ];
@@ -49,6 +51,7 @@ class EverForm extends FormBase {
     $form['phone_number'] = [
       '#type' => 'tel',
       '#title' => $this->t('Your phone number'),
+      '#description'  => t("Phone number must accord this format: +38(XXX)XXX-XX-XX."),
       '#required' => TRUE,
       '#maxlength' => 13,
     ];
@@ -57,13 +60,14 @@ class EverForm extends FormBase {
     $form['comment'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Your comment'),
+      '#description'  => t("Your comment needs to be not longer than 500 characters."),
       '#resizable' => FALSE,
       '#maxlength' => 500,
       '#cols' => 10,
       '#rows' => 4,
     ];
 
-    $form['avatar_file'] = [
+    $form['avatar_photo'] = [
       '#type' => 'managed_file',
       '#title' => $this->t('Your avatar photo'),
       '#description'  => t('Allowed extensions: png jpg jpeg'),
@@ -83,6 +87,7 @@ class EverForm extends FormBase {
       '#upload_location' => 'public://images/photos/',
       '#required' => FALSE,
       '#multiple' => FALSE,
+      '#default_value' => NULL,
       '#upload_validators'  => [
         'file_validate_extensions' => ['png jpg jpeg'],
         'file_validate_size' => [5242880],
@@ -154,26 +159,34 @@ class EverForm extends FormBase {
    *
    * {@inheritdoc}
    * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Exception
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    \Drupal::messenger()->addMessage($this->t('Thank you for feedback, @name',
-      ['@name' => $form_state->getValue('name')]));
 
-    $entry = [
-      'name' => $form_state->getValue('name'),
-      'surname' => $form_state->getValue('surname'),
-      'age' => $form_state->getValue('age'),
-      'uid' => $account->id(),
-    ];
-/*  $photo = $form_state->getValue('avatar_file');
-    $file = File::load($photo[0]);
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $avatar = $form_state->getValue('avatar_photo');
+    $file = File::load($avatar[0]);
     $file->setPermanent();
     $file->save();
+    $avatar_uri = $file->getFileUri();
 
     $photo = $form_state->getValue('comment_photo');
     $file = File::load($photo[0]);
     $file->setPermanent();
-    $file->save();*/
+    $file->save();
+    $photo_uri = $file->getFileUri();
+
+    \Drupal::database()->insert('ever')->fields([
+      'name' => $form_state->getValue('name'),
+      'email' => $form_state->getValue('email'),
+      'tel' => $form_state->getValue('phone_number'),
+      'comment' => $form_state->getValue('comment'),
+      'avatarDir' => $avatar_uri,
+      'photoDir' => $photo_uri,
+      'timestamp' => date("m-d-y | H:m:s"),
+    ])->execute();
+
+    \Drupal::messenger()->addMessage($this->t('Thank you for feedback, @name',
+      ['@name' => $form_state->getValue('name')]));
   }
 
 }

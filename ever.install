@@ -19,7 +19,7 @@ function ever_schema() {
       'name' => [
         'description' => 'User Name',
         'type' => 'varchar',
-        'length' => 101,
+        'length' => 100,
         'not null' => TRUE,
         'default' => '',
       ],
@@ -44,14 +44,14 @@ function ever_schema() {
         'not null' => TRUE,
         'default' => '',
       ],
-      'avatar-dir' => [
+      'avatarDir' => [
         'description' => 'User avatar dir',
         'type' => 'varchar',
         'length' => 600,
         'not null' => TRUE,
         'default' => '',
       ],
-      'photo-dir' => [
+      'photoDir' => [
         'description' => 'User photo dir',
         'type' => 'varchar',
         'length' => 600,
@@ -60,10 +60,10 @@ function ever_schema() {
       ],
       'timestamp' => [
         'description' => 'Timestamp',
-        'type' => 'int',
-        'unsigned' => TRUE,
+        'type' => 'varchar',
+        'length' => 100,
         'not null' => TRUE,
-        'default' => 0,
+        'default' => '',
       ],
     ],
     'primary key' => ['id'],
