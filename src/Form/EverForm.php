@@ -13,7 +13,7 @@ use Drupal\file\Entity\File;
  * @file
  * Contains \Drupal\ever\Form\EverForm.
  *
- */
+*/
 
 class EverForm extends FormBase {
 
@@ -25,6 +25,21 @@ class EverForm extends FormBase {
   public function getFormId() {
     return 'ever_form';
   }
+/*  public function load(array $entry = []) {
+
+    // Read all the fields from the dbtng_example table.
+    $select = $this->connection
+      ->select('ever')
+      // Add all the fields into our select query.
+      ->fields('ever');
+
+    // Add each field and value as a condition to this query.
+    foreach ($entry as $field => $value) {
+      $select->condition($field, $value);
+    }
+    // Return the result in object format.
+    return $select->execute()->fetchAll();
+  }*/
 
   /**
    *
@@ -74,6 +89,7 @@ class EverForm extends FormBase {
       '#upload_location' => 'public://images/avatar/',
       '#required' => FALSE,
       '#multiple' => FALSE,
+      '#default_value' => NULL,
       '#upload_validators' => [
         'file_validate_extensions' => ['png jpg jpeg'],
         'file_validate_size' => [2097152],
@@ -191,15 +207,17 @@ class EverForm extends FormBase {
       $file->save();
       $avatar_uri = $file->getFileUri();
     }
-    else {
-      $avatar = "doesn't exist";
-    }
+
     $photo = $form_state->getValue('comment_photo');
     if (count($photo) !== 0) {
       $file = File::load($photo[0]);
       $file->setPermanent();
       $file->save();
       $photo_uri = $file->getFileUri();
+    }
+    // Set default value for user avatar.
+    if (count($avatar_uri) === 0) {
+      $avatar_uri = 'public://images/default_ever/default_logo.jpg';
     }
 
     \Drupal::database()->insert('ever')->fields([
@@ -214,6 +232,13 @@ class EverForm extends FormBase {
 
     \Drupal::messenger()->addMessage($this->t('Thank you for feedback, @name.',
       ['@name' => $form_state->getValue('name')]));
+
+   /* $query = \Drupal::entityQuery('file');
+    $storage = \Drupal::entityTypeManager()->getStorage('file');
+    $files = $storage->loadMultiple($query->execute());
+    foreach ($files as $f) {
+        $f->delete();
+    }*/
   }
 
 }
