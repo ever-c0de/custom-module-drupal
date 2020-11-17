@@ -35,7 +35,7 @@ class EverForm extends FormBase {
     $form['name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Your name'),
-      '#description'  => t("Your name can't be longer than 100 characters."),
+      '#description'  => t("Your name can't be longer than 100 characters and have any numbers."),
       '#maxlength' => 100,
       '#required' => TRUE,
     ];
@@ -53,7 +53,7 @@ class EverForm extends FormBase {
       '#title' => $this->t('Your phone number'),
       '#description'  => t("Phone number must accord this format: +38(XXX)XXX-XX-XX."),
       '#required' => TRUE,
-      '#maxlength' => 13,
+      '#maxlength' => 17,
     ];
 
 
@@ -150,7 +150,28 @@ class EverForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     \Drupal::messenger()->deleteByType('error');
     if (strlen($form_state->getValue('name')) < 2) {
-      $form_state->setErrorByName('name', 'Name need to be longer');
+      $form_state->setErrorByName('name', $this->t('Name need to be longer.'));
+    }
+    if (preg_match("/^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/", $form_state->getValue('name')) === 0) {
+      $form_state->setErrorByName('name', $this->t('Your name @name is not valid.',
+        ['@name' => $form_state->getValue('name')]));
+    }
+    else {
+      \Drupal::messenger()->deleteByType('error');
+    }
+    if (preg_match("/^(?!.*@.*@.*$)(?!.*@.*\-\-.*\..*$)(?!.*@.*\-\..*$)(?!.*@.*\-$)(.*@.+(\..{1,11})?)$/", $form_state->getValue('email')) === 0) {
+      $form_state->setErrorByName('email', $this->t('The email address @email is not valid.',
+        ['@email' => $form_state->getValue('email')]));
+    }
+    else {
+      \Drupal::messenger()->deleteByType('error');
+    }
+    if (preg_match('/(^(?!\+.*\(.*\).*\-\-.*$)(?!\+.*\(.*\).*\-$)(\+[0-9]{1,3}\([0-9]{1,3}\)[0-9]{1}([-0-9]{0,8})?([0-9]{0,1})?)$)|(^[0-9]{1,4}$)/', $form_state->getValue('phone_number')) === 0) {
+      $form_state->setErrorByName('phone_number', $this->t('The telephone number @tel is not valid.',
+        ['@tel' => $form_state->getValue('phone_number')]));
+    }
+    else {
+      \Drupal::messenger()->deleteByType('error');
     }
   }
 
@@ -164,16 +185,22 @@ class EverForm extends FormBase {
 
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $avatar = $form_state->getValue('avatar_photo');
-    $file = File::load($avatar[0]);
-    $file->setPermanent();
-    $file->save();
-    $avatar_uri = $file->getFileUri();
-
+    if (count($avatar) !== 0) {
+      $file = File::load($avatar[0]);
+      $file->setPermanent();
+      $file->save();
+      $avatar_uri = $file->getFileUri();
+    }
+    else {
+      $avatar = "doesn't exist";
+    }
     $photo = $form_state->getValue('comment_photo');
-    $file = File::load($photo[0]);
-    $file->setPermanent();
-    $file->save();
-    $photo_uri = $file->getFileUri();
+    if (count($photo) !== 0) {
+      $file = File::load($photo[0]);
+      $file->setPermanent();
+      $file->save();
+      $photo_uri = $file->getFileUri();
+    }
 
     \Drupal::database()->insert('ever')->fields([
       'name' => $form_state->getValue('name'),
@@ -182,10 +209,10 @@ class EverForm extends FormBase {
       'comment' => $form_state->getValue('comment'),
       'avatarDir' => $avatar_uri,
       'photoDir' => $photo_uri,
-      'timestamp' => date("m-d-y | H:m:s"),
+      'timestamp' => date("m-d-y | H:i:s", time()),
     ])->execute();
 
-    \Drupal::messenger()->addMessage($this->t('Thank you for feedback, @name',
+    \Drupal::messenger()->addMessage($this->t('Thank you for feedback, @name.',
       ['@name' => $form_state->getValue('name')]));
   }
 

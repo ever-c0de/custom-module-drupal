@@ -48,14 +48,14 @@ function ever_schema() {
         'description' => 'User avatar dir',
         'type' => 'varchar',
         'length' => 600,
-        'not null' => TRUE,
+        'not null' => FALSE,
         'default' => '',
       ],
       'photoDir' => [
         'description' => 'User photo dir',
         'type' => 'varchar',
         'length' => 600,
-        'not null' => TRUE,
+        'not null' => FALSE,
         'default' => '',
       ],
       'timestamp' => [
