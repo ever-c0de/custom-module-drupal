@@ -1,0 +1,99 @@
+.posts__title {
+  margin: 0 auto;
+  width: fit-content;
+
+  font-size: 27px !important;
+}
+.ever_module__title {
+  margin: 20px auto 0;
+  padding: 10px;
+  width: fit-content;
+
+  font-size: 27px !important;
+}
+
+.posts__feedback {
+  margin-top: 25px;
+
+  border: 9px double rgba(148, 0, 108, 1);;
+  background-color: rgba(0, 0, 0, 0.05);
+  box-shadow: 7px 6px 1px 1px rgba(0, 0, 255, .1);
+
+}
+.posts__feedback:last-of-type {
+  margin-bottom: 20px;
+}
+.posts__inner {
+  padding: 10px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  position: relative;
+}
+.user__column {
+  font-family: 'Courier New', Monospace, 'sans-serif';
+  max-width: 200px;
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.user__avatar {
+  width: 128px;
+  height: 128px;
+}
+.user__name {
+  margin-top: 10px;
+  font-size: 20px;
+  padding: 5px 0;
+}
+.user__email {
+
+}
+.user__tel {
+  max-width: 143px;
+  margin-top: 10px;
+
+}
+
+.content__row {
+
+}
+.content__text {
+  margin-top: 15px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.user__feedback {
+  letter-spacing: 0.3px;
+  font-size: 15px;
+  font-family: "Open Sans", Verdana, sans-serif;
+
+  margin: 0;
+  padding: 0 10px;
+  max-width: 600px;
+
+}
+.user__photo {
+  margin-top: 15px;
+  padding: 5px;
+  max-width: 120px;
+  max-height: 120px;
+}
+
+.timestamp {
+  font-family: 'Courier New', Monospace, sans-serif;
+  font-weight: 600;
+
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}

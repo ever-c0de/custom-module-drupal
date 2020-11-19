@@ -21,25 +21,9 @@ class EverForm extends FormBase {
    * {@inheritDoc}.
    *
    */
-
   public function getFormId() {
     return 'ever_form';
   }
-/*  public function load(array $entry = []) {
-
-    // Read all the fields from the dbtng_example table.
-    $select = $this->connection
-      ->select('ever')
-      // Add all the fields into our select query.
-      ->fields('ever');
-
-    // Add each field and value as a condition to this query.
-    foreach ($entry as $field => $value) {
-      $select->condition($field, $value);
-    }
-    // Return the result in object format.
-    return $select->execute()->fetchAll();
-  }*/
 
   /**
    *
@@ -47,10 +31,34 @@ class EverForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     \Drupal::messenger()->deleteByType('error');
+    $db = \Drupal::database()->select('ever')->fields('ever', [
+      'name',
+      'email',
+      'tel',
+      'comment',
+      'avatarDir',
+      'photoDir',
+      'timestamp',
+    ]);
+    $db_values = $db->execute()->fetchAll();
+    $db_values = array_reverse($db_values);
+
+    $posts_index = file_get_contents('modules/custom/ever/templates/posts.html.twig');
+    $form['posts'] = [
+      '#type' => 'inline_template',
+      '#template' => $posts_index,
+      '#context'  => [
+        'users' => $db_values,
+      ],
+    ];
+    $form['title'] = [
+      '#type' => 'inline_template',
+      '#template' => "<h2 class=\"ever_module__title\">Give your feedback about us!</h2>",
+    ];
     $form['name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Your name'),
-      '#description'  => t("Your name can't be longer than 100 characters and have any numbers."),
+      '#description' => $this->t("Your name can't be longer than 100 characters and have any numbers."),
       '#maxlength' => 100,
       '#required' => TRUE,
     ];
@@ -130,25 +138,15 @@ class EverForm extends FormBase {
       '#weight' => -100,
     ];
 
-    \Drupal::database()->select('ever')->fields([
-      'name',
-      'email',
-      'tel',
-      'comment',
-      'avatarDir',
-      'photoDir',
-      'timestamp',
-    ])->execute();
 
-    $posts_index = file_get_contents('modules/custom/ever/templates/posts.html.twig');
-    $form['posts'] = [
-      '#type' => 'inline_template',
-      '#template' => $posts_index,
-      '#context'  => [
-        'name' => 'me',
-      ],
-    ];
     return $form;
+    /*        'user_avatar' => $db_values['avatarDir'],
+        'user_name' => $db_values['name'],
+        'user_email' => $db_values['email'],
+        'user_tel' => $db_values['tel'],
+        'user_feedback' => $db_values['comment'],
+        'user_photo' => $db_values['photoDir'],
+        'post_timestamp' => $db_values['timestamp'],*/
   }
 
   /**
@@ -225,7 +223,7 @@ class EverForm extends FormBase {
       $file = File::load($avatar[0]);
       $file->setPermanent();
       $file->save();
-      $avatar_uri = $file->getFileUri();
+      $avatar_uri = $file->url();
     }
 
     $photo = $form_state->getValue('comment_photo');
@@ -233,11 +231,11 @@ class EverForm extends FormBase {
       $file = File::load($photo[0]);
       $file->setPermanent();
       $file->save();
-      $photo_uri = $file->getFileUri();
+      $photo_uri = $file->url();
     }
     // Set default value for user avatar.
     if (count($avatar_uri) === 0) {
-      $avatar_uri = 'public://images/default_ever/default_logo.jpg';
+      $avatar_uri = 'http://ever.loc/sites/default/files/images/avatar/default_logo.jpg';
     }
 
     \Drupal::database()->insert('ever')->fields([

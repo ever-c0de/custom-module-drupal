@@ -9,26 +9,28 @@ The id of the target elements are used in the tour definition file as targets
 for the various tour steps.
 
 #}
-
-{% trans %}
-
+{{ attach_library('ever/ever') }}
+<h2 class="posts__title">Our Feedbacks</h2>
+  {% for user in users %}
 <article class="posts__feedback">
-  <h2 class="posts__title">Our Feedbacks</h2>
   <div class="posts__inner">
     <div class="user__column">
-      <img class="user__avatar" src="{{ user_avatar }}" alt="{{ user_name }} avatar" title="{{ user_name }} title">
-      <span class="user__name">{{ user_name }}</span>
-      <span class="user__email">Email: {{ user_email }}</span>
-      <span class="user__tel">Phone number: {{ user_tel }}</span>
+      <img class="user__avatar" src="{{ user.avatarDir|e }}" alt="{{ user.name|e }} avatar" title="{{ user.name|e }} title">
+      <span class="user__name">{{ user.name|e }}</span>
+      <span class="user__email">Email: {{ user.email|e }}</span>
+      <span class="user__tel">Phone number: {{ user.tel|e }}</span>
     </div>
     <div class="content__row">
       <div class="content__text">
         <p class="user__feedback">
-          {{ user__feedback }}
+          {{ user.comment|e }}
         </p>
-        <img src="{{ user_photo }}" alt="{{ photo_name }}" title="{{ photo_name }}" class="user__photo">
+        <img class="user__photo" src="{{ user.photoDir }}" alt="{{ user.name|e }} image" title="{{ user.name|e }} image" >
       </div>
     </div>
+    <span class="timestamp">{{ user.timestamp|e }}</span>
   </div>
 </article>
-{% endtrans %}
+  {% endfor %}
+
+
