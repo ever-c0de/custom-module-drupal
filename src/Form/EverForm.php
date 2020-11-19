@@ -77,6 +77,7 @@ class EverForm extends FormBase {
       '#title' => $this->t('Your comment'),
       '#description'  => t("Your comment needs to be not longer than 500 characters."),
       '#resizable' => FALSE,
+      '#required' => TRUE,
       '#maxlength' => 500,
       '#cols' => 10,
       '#rows' => 4,
@@ -127,6 +128,14 @@ class EverForm extends FormBase {
     $form['system_messages'] = [
       '#markup' => '<div id="form-system-messages"></div>',
       '#weight' => -100,
+    ];
+
+    $form['posts'] = [
+      '#type' => 'inline_template',
+      '#template' => "{% trans %} Hello {% endtrans %} <strong>{{name}}</strong>",
+      '#context' => [
+        'name' => 'me',
+      ],
     ];
     return $form;
   }
