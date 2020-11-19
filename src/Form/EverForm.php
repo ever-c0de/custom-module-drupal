@@ -130,10 +130,21 @@ class EverForm extends FormBase {
       '#weight' => -100,
     ];
 
+    \Drupal::database()->select('ever')->fields([
+      'name',
+      'email',
+      'tel',
+      'comment',
+      'avatarDir',
+      'photoDir',
+      'timestamp',
+    ])->execute();
+
+    $posts_index = file_get_contents('modules/custom/ever/templates/posts.html.twig');
     $form['posts'] = [
       '#type' => 'inline_template',
-      '#template' => "{% trans %} Hello {% endtrans %} <strong>{{name}}</strong>",
-      '#context' => [
+      '#template' => $posts_index,
+      '#context'  => [
         'name' => 'me',
       ],
     ];

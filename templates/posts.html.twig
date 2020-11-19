@@ -1,0 +1,34 @@
+{#
+
+Description text for the Tour Example.
+
+Note that we have defined some 'buttons.' These page elements are targets for
+the tour we're demonstrating.
+
+The id of the target elements are used in the tour definition file as targets
+for the various tour steps.
+
+#}
+
+{% trans %}
+
+<article class="posts__feedback">
+  <h2 class="posts__title">Our Feedbacks</h2>
+  <div class="posts__inner">
+    <div class="user__column">
+      <img class="user__avatar" src="{{ user_avatar }}" alt="{{ user_name }} avatar" title="{{ user_name }} title">
+      <span class="user__name">{{ user_name }}</span>
+      <span class="user__email">Email: {{ user_email }}</span>
+      <span class="user__tel">Phone number: {{ user_tel }}</span>
+    </div>
+    <div class="content__row">
+      <div class="content__text">
+        <p class="user__feedback">
+          {{ user__feedback }}
+        </p>
+        <img src="{{ user_photo }}" alt="{{ photo_name }}" title="{{ photo_name }}" class="user__photo">
+      </div>
+    </div>
+  </div>
+</article>
+{% endtrans %}
