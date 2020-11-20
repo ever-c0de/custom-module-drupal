@@ -44,11 +44,17 @@ class EverForm extends FormBase {
     $db_values = array_reverse($db_values);
 
     $posts_index = file_get_contents('modules/custom/ever/templates/posts.html.twig');
+    global $_ever_is_admin;
+    if (\Drupal::currentUser()->hasPermission('administer site configuration')) {
+      $_ever_is_admin = TRUE;
+    }
+
     $form['posts'] = [
       '#type' => 'inline_template',
       '#template' => $posts_index,
       '#context'  => [
         'users' => $db_values,
+        'admin' => $is_admin,
       ],
     ];
     $form['title'] = [
@@ -81,7 +87,6 @@ class EverForm extends FormBase {
       '#required' => TRUE,
       '#maxlength' => 17,
     ];
-
 
     $form['comment'] = [
       '#type' => 'textarea',
@@ -145,13 +150,6 @@ class EverForm extends FormBase {
 
 
     return $form;
-    /*        'user_avatar' => $db_values['avatarDir'],
-        'user_name' => $db_values['name'],
-        'user_email' => $db_values['email'],
-        'user_tel' => $db_values['tel'],
-        'user_feedback' => $db_values['comment'],
-        'user_photo' => $db_values['photoDir'],
-        'post_timestamp' => $db_values['timestamp'],*/
   }
 
   /**
@@ -255,13 +253,6 @@ class EverForm extends FormBase {
 
     \Drupal::messenger()->addMessage($this->t('Thank you for feedback, @name.',
       ['@name' => $form_state->getValue('name')]));
-
-   /* $query = \Drupal::entityQuery('file');
-    $storage = \Drupal::entityTypeManager()->getStorage('file');
-    $files = $storage->loadMultiple($query->execute());
-    foreach ($files as $f) {
-        $f->delete();
-    }*/
   }
 
 }
