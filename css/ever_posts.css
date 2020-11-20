@@ -1,3 +1,54 @@
+/* Submit Form */
+
+.ever-form {
+
+}
+.form-item-name {
+  max-width: 200px;
+}
+.form-item-email {
+  max-width: 200px;
+}
+.form-item-phone-number {
+  max-width: 200px;
+}
+.form-item-comment {
+  max-width: 300px;
+
+}
+.form-textarea{
+  resize: none;
+  height: 70px;
+}
+.form-ever-submit {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border: 5px ridge #1995AD;
+  /*border-bottom: 5px ridge #1995AD;*/
+  padding-bottom: 20px;
+}
+.form-ever-inner {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.information-fields {
+  margin-right: 15px;
+}
+.upload-fields {
+  margin-left: 15px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Articles */
 .posts__title {
   margin: 0 auto;
   width: fit-content;
@@ -15,9 +66,9 @@
 .posts__feedback {
   margin-top: 25px;
 
-  border: 9px double rgba(148, 0, 108, 1);;
-  background-color: rgba(0, 0, 0, 0.05);
-  box-shadow: 7px 6px 1px 1px rgba(0, 0, 255, .1);
+  border: 9px double #1995AD;
+  background-color: #F1F1F2;
+  box-shadow: 15px 6px 23px -7px rgba(0,0,0,0.29);
 
 }
 .posts__feedback:last-of-type {
@@ -35,6 +86,7 @@
 .user__column {
   font-family: 'Courier New', Monospace, 'sans-serif';
   max-width: 200px;
+  width: 100%;
   padding: 10px;
 
   display: flex;
@@ -42,6 +94,10 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+  border: 2px dashed #A1D6E2;
+  border-radius: 25px;
+  background-color: rgba(2%, 22%, 32%, 0.8);
+  color: #fff;
 }
 .user__avatar {
   width: 128px;
@@ -51,8 +107,10 @@
   margin-top: 10px;
   font-size: 20px;
   padding: 5px 0;
+  max-width: 210px;
 }
 .user__email {
+  max-width: 210px;
 
 }
 .user__tel {
@@ -62,7 +120,7 @@
 }
 
 .content__row {
-
+  align-self: flex-start;
 }
 .content__text {
   margin-top: 15px;
@@ -70,7 +128,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  max-height: 400px;
+  min-height: 200px;
 }
 .user__feedback {
   letter-spacing: 0.3px;
@@ -83,10 +143,10 @@
 
 }
 .user__photo {
-  margin-top: 15px;
   padding: 5px;
   max-width: 120px;
   max-height: 120px;
+  margin-top: auto;
 }
 
 .timestamp {

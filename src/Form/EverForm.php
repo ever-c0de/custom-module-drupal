@@ -54,6 +54,7 @@ class EverForm extends FormBase {
     $form['title'] = [
       '#type' => 'inline_template',
       '#template' => "<h2 class=\"ever_module__title\">Give your feedback about us!</h2>",
+      '#prefix' => '<div class="form-ever-submit">',
     ];
     $form['name'] = [
       '#type' => 'textfield',
@@ -61,6 +62,8 @@ class EverForm extends FormBase {
       '#description' => $this->t("Your name can't be longer than 100 characters and have any numbers."),
       '#maxlength' => 100,
       '#required' => TRUE,
+      '#prefix' => '<div class="form-ever-inner">
+                        <div class="information-fields">',
     ];
 
     $form['email'] = [
@@ -89,6 +92,8 @@ class EverForm extends FormBase {
       '#maxlength' => 500,
       '#cols' => 10,
       '#rows' => 4,
+      '#suffix' => '</div>
+<div class="upload-fields">',
     ];
 
     $form['avatar_photo'] = [

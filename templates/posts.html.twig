@@ -25,7 +25,9 @@ for the various tour steps.
         <p class="user__feedback">
           {{ user.comment|e }}
         </p>
-        <img class="user__photo" src="{{ user.photoDir }}" alt="{{ user.name|e }} image" title="{{ user.name|e }} image" >
+        {% if user.photoDir != false %}
+          <img class="user__photo" src="{{ user.photoDir }}" alt="{{ user.name|e }} image" title="{{ user.name|e }} image" >
+        {% endif %}
       </div>
     </div>
     <span class="timestamp">{{ user.timestamp|e }}</span>
