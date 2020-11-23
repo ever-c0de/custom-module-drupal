@@ -17,12 +17,11 @@ use Drupal\ever\Controller\EverController;
 */
 
 class EverForm extends FormBase {
-
-
   /**
    * {@inheritDoc}.
    *
    */
+
   public function getFormId() {
     return 'ever_form';
   }
@@ -32,26 +31,8 @@ class EverForm extends FormBase {
    * {@inheritdoc}.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $controller = new EverController();
-    $db_values = $controller->getDbValues();
     \Drupal::messenger()->deleteByType('error');
 
-    $posts_index = file_get_contents('modules/custom/ever/templates/posts.html.twig');
-    global $_ever_is_admin;
-    if (\Drupal::currentUser()->hasPermission('administer site configuration')) {
-      $_ever_is_admin = TRUE;
-    }
-
-
-
-    $form['posts'] = [
-      '#type' => 'inline_template',
-      '#template' => $posts_index,
-      '#context'  => [
-        'users' => $db_values,
-        'admin' => $_ever_is_admin,
-      ],
-    ];
     $form['title'] = [
       '#type' => 'inline_template',
       '#template' => "<h2 class=\"ever_module__title\">Give your feedback about us!</h2>",

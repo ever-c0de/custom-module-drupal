@@ -6,6 +6,10 @@
  */
 namespace Drupal\ever\Controller;
 
+use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\file\Entity\File;
+use TYPO3\PharStreamWrapper\Interceptor\PharMetaDataInterceptor;
+
 class EverController {
 
   public function getDbValues() {
@@ -25,12 +29,37 @@ class EverController {
   }
 
   public function getTemplate() {
-
+    $posts_index = file_get_contents('modules/custom/ever/templates/posts.html.twig');
+    return $posts_index;
   }
 
+  public function isAdmin() {
+    global $_ever_is_admin;
+    if (\Drupal::currentUser()->hasPermission('administer site configuration')) {
+      $_ever_is_admin = TRUE;
+    }
+    return $_ever_is_admin;
+  }
+
+  public function renderPosts() {
+    $posts['posts'] = [
+      '#type' => 'inline_template',
+      '#template' => $this->getTemplate(),
+      '#context' => [
+        'users' => $this->getDbValues(),
+        'admin' => $this->isAdmin(),
+      ],
+    ];
+    $posts['form'] = \Drupal::formBuilder()->getForm('Drupal\ever\Form\EverForm');
+    return $posts;
+  }
   public function postDelete($id) {
-    $postDelete = \Drupal::database()->delete('ever')->condition('id', $id)->execute();
-    return \Drupal::formBuilder()->getForm('Drupal\ever\Form\EverForm');
-  }
+    \Drupal::database()->delete('ever')->condition('id', $id)->execute();
 
+/*    $avatar = \Drupal::database()->select('ever')->condition('id', $id)->addField('ever', 'avatarDir');
+    $photoDir = \Drupal::database()->select('ever')->condition('id', $id)->addField('ever', 'photoDir');
+    file_delete($avatar);
+    file_delete($photoDir);*/
+    return $this->renderPosts();
+  }
 }

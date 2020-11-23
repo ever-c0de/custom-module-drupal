@@ -1,7 +1,7 @@
 ever.form:
   path: '/module-page'
   defaults:
-    _form:  '\Drupal\ever\Form\EverForm'
+    _controller: '\Drupal\ever\Controller\EverController::renderPosts'
     _title: 'Ever Module'
   requirements:
     _permission: 'access content'
