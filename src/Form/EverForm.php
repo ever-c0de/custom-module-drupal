@@ -8,6 +8,7 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\file\Entity\File;
+use Drupal\ever\Controller\EverController;
 
 /**
  * @file
@@ -16,6 +17,7 @@ use Drupal\file\Entity\File;
 */
 
 class EverForm extends FormBase {
+
 
   /**
    * {@inheritDoc}.
@@ -30,25 +32,17 @@ class EverForm extends FormBase {
    * {@inheritdoc}.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $controller = new EverController();
+    $db_values = $controller->getDbValues();
     \Drupal::messenger()->deleteByType('error');
-    $db = \Drupal::database()->select('ever')->fields('ever', [
-      'id',
-      'name',
-      'email',
-      'tel',
-      'comment',
-      'avatarDir',
-      'photoDir',
-      'timestamp',
-    ]);
-    $db_values = $db->execute()->fetchAll();
-    $db_values = array_reverse($db_values);
 
     $posts_index = file_get_contents('modules/custom/ever/templates/posts.html.twig');
     global $_ever_is_admin;
     if (\Drupal::currentUser()->hasPermission('administer site configuration')) {
       $_ever_is_admin = TRUE;
     }
+
+
 
     $form['posts'] = [
       '#type' => 'inline_template',
