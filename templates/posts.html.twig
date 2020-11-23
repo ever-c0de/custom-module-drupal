@@ -31,6 +31,9 @@ for the various tour steps.
       </div>
     </div>
     <span class="timestamp">{{ user.timestamp|e }}</span>
+    {% if admin != false %}
+      <a href="module-page/post-delete/{{ user.id|e }}" id="{{ user.id }}" class="admin_post_delete">Delete</a>
+    {% endif %}
   </div>
 </article>
   {% endfor %}

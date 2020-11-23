@@ -14,3 +14,9 @@ ever.admin_settings:
   requirements:
     _permission: 'access content'
 
+ever.delete:
+  path: '/module-page/post-delete/{id}'
+  defaults:
+    _controller: '\Drupal\ever\Controller\EverController::postDelete'
+  requirements:
+    _permission: 'access arguments page'

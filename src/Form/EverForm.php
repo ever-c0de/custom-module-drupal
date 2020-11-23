@@ -32,6 +32,7 @@ class EverForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     \Drupal::messenger()->deleteByType('error');
     $db = \Drupal::database()->select('ever')->fields('ever', [
+      'id',
       'name',
       'email',
       'tel',
@@ -54,7 +55,7 @@ class EverForm extends FormBase {
       '#template' => $posts_index,
       '#context'  => [
         'users' => $db_values,
-        'admin' => $is_admin,
+        'admin' => $_ever_is_admin,
       ],
     ];
     $form['title'] = [
