@@ -56,10 +56,7 @@ class EverController {
   public function postDelete($id) {
     \Drupal::database()->delete('ever')->condition('id', $id)->execute();
 
-/*    $avatar = \Drupal::database()->select('ever')->condition('id', $id)->addField('ever', 'avatarDir');
-    $photoDir = \Drupal::database()->select('ever')->condition('id', $id)->addField('ever', 'photoDir');
-    file_delete($avatar);
-    file_delete($photoDir);*/
+
     return $this->renderPosts();
   }
 }
