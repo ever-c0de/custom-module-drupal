@@ -8,7 +8,6 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\file\Entity\File;
-use Drupal\ever\Controller\EverController;
 
 /**
  * @file
@@ -30,7 +29,8 @@ class EverForm extends FormBase {
    *
    * {@inheritdoc}.
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state) /*id*/
+  {
     \Drupal::messenger()->deleteByType('error');
 
     $form['title'] = [
@@ -195,35 +195,38 @@ class EverForm extends FormBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Exception
    */
-
+// TODO: Finish images style
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $avatar = $form_state->getValue('avatar_photo');
     if (count($avatar) !== 0) {
       $file = File::load($avatar[0]);
+      $avatar_path = $file->Url();
       $file->setPermanent();
       $file->save();
-      $avatar_uri = $file->url();
+      $avatar_id = $avatar[0];
     }
 
     $photo = $form_state->getValue('comment_photo');
     if (count($photo) !== 0) {
       $file = File::load($photo[0]);
+      $photo_path = $file->Url();
       $file->setPermanent();
       $file->save();
-      $photo_uri = $file->url();
+      $photo_id = $photo[0];
+//      $hello = \Drupal::entityTypeManager()->getStorage('file')->load($photo_id)->createFileUrl();
     }
-    // Set default value for user avatar.
-    if (count($avatar_uri) === 0) {
-      $avatar_uri = 'http://ever.loc/sites/default/files/images/avatar/default_logo.jpg';
-    }
+/*    // Set default value for user avatar.
+    if (count($avatar_id) === 0) {
+      $avatar_id = 0;
+    }*/
 
     \Drupal::database()->insert('ever')->fields([
       'name' => $form_state->getValue('name'),
       'email' => $form_state->getValue('email'),
       'tel' => $form_state->getValue('phone_number'),
       'comment' => $form_state->getValue('comment'),
-      'avatarDir' => $avatar_uri,
-      'photoDir' => $photo_uri,
+      'avatarDir' => $avatar_id,
+      'photoDir' => $photo_id,
       'timestamp' => date("m-d-y | H:i:s", time()),
     ])->execute();
 

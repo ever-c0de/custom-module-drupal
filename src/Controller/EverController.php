@@ -10,22 +10,39 @@ use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\file\Entity\File;
 use TYPO3\PharStreamWrapper\Interceptor\PharMetaDataInterceptor;
 
+
 class EverController {
 
   public function getDbValues() {
-    $db = \Drupal::database()->select('ever')->fields('ever', [
-      'id',
-      'name',
-      'email',
-      'tel',
-      'comment',
-      'avatarDir',
-      'photoDir',
-      'timestamp',
-    ]);
-    $db_values = $db->execute()->fetchAll();
-    $db_values = array_reverse($db_values);
-    return $db_values;
+    $db = \Drupal::database()
+      ->select('ever')
+      ->fields('ever', [
+        'id',
+        'name',
+        'email',
+        'tel',
+        'comment',
+        'avatarDir',
+        'photoDir',
+        'timestamp',
+      ])
+      ->orderBy('id', 'DESC')
+      ->execute()
+      ->fetchAll();
+    foreach ($db as $value) {
+      if ($value->avatarDir != NULL) {
+        $value->avatarDir = File::load($value->avatarDir)->Url();
+      }
+      else {
+        $value->avatarDir = 'http://ever.loc/modules/custom/ever/default_ever/default_logo.jpg';
+      }
+      if ($value->photoDir != NULL) {
+        $value->photoDir = File::load($value->photoDir)->Url();
+      }
+
+    }
+
+    return $db;
   }
 
   public function getTemplate() {
@@ -53,10 +70,16 @@ class EverController {
     $posts['form'] = \Drupal::formBuilder()->getForm('Drupal\ever\Form\EverForm');
     return $posts;
   }
+
   public function postDelete($id) {
     \Drupal::database()->delete('ever')->condition('id', $id)->execute();
-
-
     return $this->renderPosts();
   }
+// TODO: Finish postUpdate() method.
+/*  public function postUpdate($id) {
+    if ($this->isAdmin() === TRUE) {
+
+    }
+  }*/
+
 }
