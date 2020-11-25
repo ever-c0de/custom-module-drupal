@@ -10,7 +10,10 @@ for the various tour steps.
 
 #}
 {{ attach_library('ever/ever') }}
+{% if user != false %}
 <h2 class="posts__title">Our Feedbacks</h2>
+{% endif %}
+
   {% for user in users %}
 <article class="posts__feedback">
   <div class="posts__inner">

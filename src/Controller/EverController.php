@@ -6,12 +6,14 @@
  */
 namespace Drupal\ever\Controller;
 
+use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Form\ConfigFormBase;
 use Drupal\file\Entity\File;
 use TYPO3\PharStreamWrapper\Interceptor\PharMetaDataInterceptor;
 
 
-class EverController {
+class EverController extends ControllerBase {
 
   public function getDbValues() {
     $db = \Drupal::database()
@@ -41,7 +43,6 @@ class EverController {
       }
 
     }
-
     return $db;
   }
 
@@ -73,7 +74,7 @@ class EverController {
 
   public function postDelete($id) {
     \Drupal::database()->delete('ever')->condition('id', $id)->execute();
-    return $this->renderPosts();
+    return $this->redirect('ever.form');
   }
 // TODO: Finish postUpdate() method.
 /*  public function postUpdate($id) {
