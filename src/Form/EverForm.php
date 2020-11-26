@@ -43,6 +43,7 @@ class EverForm extends FormBase {
       '#title' => $this->t('Your name'),
       '#description' => $this->t("Your name can't be longer than 100 characters and have any numbers."),
       '#maxlength' => 100,
+      '#default_value' => '',
       '#required' => TRUE,
       '#prefix' => '<div class="form-ever-inner">
                         <div class="information-fields">',
