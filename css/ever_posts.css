@@ -3,16 +3,34 @@
 .ever-form {
 
 }
-.admin_post_delete {
+.admin_buttons {
+  margin-left: auto;
+}
+.admin_button {
   text-decoration: none;
   border: none;
-  border: 2px solid #0a6eb4;
+  border: 2px solid;
   background-color: #0a6eb4;
   color: #fff;
   padding: 6px;
+  margin-right: 10px;
+}
+.admin_post_delete {
+  background-color: #cc0000;
+  border-color: #a30000;
+  color: #fff;
 }
 .admin_post_delete:hover {
-  background-color: #0963a2;
+  background-color: #820000;
+  color: #fff;
+}
+.admin_post_update {
+  background-color: #006600;
+  border-color: #005100;
+  color: #fff;
+}
+.admin_post_update:hover {
+  background-color: #004c00;
   color: #fff;
 }
 .form-item-name {

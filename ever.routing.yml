@@ -20,3 +20,10 @@ ever.delete:
     _controller: '\Drupal\ever\Controller\EverController::postDelete'
   requirements:
     _permission: 'access arguments page'
+
+ever.update:
+  path: '/module-page/post-update/{id}'
+  defaults:
+    _controller: '\Drupal\ever\Controller\EverController::postUpdate'
+  requirements:
+    _permission: 'access arguments page'

@@ -77,10 +77,11 @@ class EverController extends ControllerBase {
     return $this->redirect('ever.form');
   }
 // TODO: Finish postUpdate() method.
-/*  public function postUpdate($id) {
+  public function postUpdate($id) {
     if ($this->isAdmin() === TRUE) {
+      $db = $this->getDbValues();
 
     }
-  }*/
+  }
 
 }
