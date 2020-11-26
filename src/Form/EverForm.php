@@ -29,8 +29,7 @@ class EverForm extends FormBase {
    *
    * {@inheritdoc}.
    */
-  public function buildForm(array $form, FormStateInterface $form_state) /*id*/
-  {
+  public function buildForm(array $form, FormStateInterface $form_state, $id = NULL) {
     \Drupal::messenger()->deleteByType('error');
 
     $form['title'] = [
@@ -42,8 +41,8 @@ class EverForm extends FormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Your name'),
       '#description' => $this->t("Your name can't be longer than 100 characters and have any numbers."),
-      '#maxlength' => 100,
       '#default_value' => '',
+      '#maxlength' => 100,
       '#required' => TRUE,
       '#prefix' => '<div class="form-ever-inner">
                         <div class="information-fields">',
@@ -53,6 +52,7 @@ class EverForm extends FormBase {
       '#type' => 'email',
       '#title' => 'Email address',
       '#description'  => t("Email needs to start with letter or number."),
+      '#default_value' => '',
       '#required' => TRUE,
       '#maxlength' => 100,
     ];
@@ -61,6 +61,7 @@ class EverForm extends FormBase {
       '#type' => 'tel',
       '#title' => $this->t('Your phone number'),
       '#description'  => t("Phone number must accord this format: +38(XXX)XXX-XX-XX."),
+      '#default_value' => '',
       '#required' => TRUE,
       '#maxlength' => 17,
     ];
@@ -69,6 +70,7 @@ class EverForm extends FormBase {
       '#type' => 'textarea',
       '#title' => $this->t('Your comment'),
       '#description'  => t("Your comment needs to be not longer than 500 characters."),
+      '#default_value' => '',
       '#resizable' => FALSE,
       '#required' => TRUE,
       '#maxlength' => 500,
@@ -82,10 +84,10 @@ class EverForm extends FormBase {
       '#type' => 'managed_file',
       '#title' => $this->t('Your avatar photo'),
       '#description'  => t('Allowed extensions: png jpg jpeg'),
+      '#default_value' => NULL,
       '#upload_location' => 'public://images/avatar/',
       '#required' => FALSE,
       '#multiple' => FALSE,
-      '#default_value' => NULL,
       '#upload_validators' => [
         'file_validate_extensions' => ['png jpg jpeg'],
         'file_validate_size' => [2097152],
@@ -96,10 +98,10 @@ class EverForm extends FormBase {
       '#type' => 'managed_file',
       '#title' => $this->t('Your comment photo'),
       '#description'  => t('Allowed extensions: png jpg jpeg'),
+      '#default_value' => NULL,
       '#upload_location' => 'public://images/photos/',
       '#required' => FALSE,
       '#multiple' => FALSE,
-      '#default_value' => NULL,
       '#upload_validators'  => [
         'file_validate_extensions' => ['png jpg jpeg'],
         'file_validate_size' => [5242880],
@@ -124,8 +126,6 @@ class EverForm extends FormBase {
       '#markup' => '<div id="form-system-messages"></div>',
       '#weight' => -100,
     ];
-
-
     return $form;
   }
 
@@ -214,12 +214,7 @@ class EverForm extends FormBase {
       $file->setPermanent();
       $file->save();
       $photo_id = $photo[0];
-//      $hello = \Drupal::entityTypeManager()->getStorage('file')->load($photo_id)->createFileUrl();
     }
-/*    // Set default value for user avatar.
-    if (count($avatar_id) === 0) {
-      $avatar_id = 0;
-    }*/
 
     \Drupal::database()->insert('ever')->fields([
       'name' => $form_state->getValue('name'),

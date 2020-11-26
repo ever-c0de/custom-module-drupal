@@ -10,6 +10,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\Entity\Node;
 use Drupal\file\Entity\File;
 use TYPO3\PharStreamWrapper\Interceptor\PharMetaDataInterceptor;
 
@@ -77,24 +78,7 @@ class EverController extends ControllerBase {
     \Drupal::database()->delete('ever')->condition('id', $id)->execute();
     return $this->redirect('ever.form');
   }
-  // @todo Finish postUpdate() method.
   public function postUpdate($id) {
-    if ($this->isAdmin() === TRUE) {
-      $post = \Drupal::database()->select('ever')
-        ->condition('id', $id)
-        ->fields('ever')
-        ->execute()
-        ->fetchAll();
-      $posts = \Drupal::formBuilder()->getForm('Drupal\ever\Form\EverForm');
-      $posts['name']['#default_value'] = $post[0]->name;
-      $posts['email']['#default_value'] = $post[0]->email;
-      $posts['tel']['#default_value'] = $post[0]->tel;
-      $posts['comment']['#default_value'] = $post[0]->comment;
-      $posts['avatarDir']['#default_value'] = $post[0]->avatarDir;
-      $posts['photoDir']['#default_value'] = $post[0]->photoDir;
-
-    }
-    return $posts;
+    return \Drupal::formBuilder()->getForm('Drupal\ever\Form\EverForm', $id);
   }
-
 }

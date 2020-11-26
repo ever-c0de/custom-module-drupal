@@ -1,1 +1,33 @@
 <?php
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\ever\Controller\EverController;
+use Drupal\file\Entity\File;
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param FormStateInterface $form_state
+ * @param $form_id
+ * @param EverController $id
+ */
+function ever_form_ever_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'ever_form') {
+    $id = $form_state->getBuildInfo();
+    if ($id['args'] != FALSE){
+    $post = \Drupal::database()->select('ever')
+      ->condition('id', $id['args'])
+      ->fields('ever')
+      ->execute()
+      ->fetchAll();
+    $form['name']['#default_value'] = $post[0]->name;
+    $form['email']['#default_value'] = $post[0]->email;
+    $form['phone_number']['#default_value'] = $post[0]->tel;
+    $form['comment']['#default_value'] = $post[0]->comment;
+// @todo images and update!
+    $form['avatar_photo']['#default_value'] = $post[0]->File::load($post->avatarDir)->Url();
+    $form['comment_photo']['#default_value'] = $post[0]->File::load($post->photoDir)->Url();
+    }
+  }
+  return $form;
+}
