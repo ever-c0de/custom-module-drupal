@@ -49,14 +49,14 @@ function ever_schema() {
         'type' => 'int',
         'length' => 600,
         'not null' => FALSE,
-        'default' => '',
+        'default' => NULL,
       ],
       'photoDir' => [
         'description' => 'User photo dir',
         'type' => 'int',
         'length' => 600,
         'not null' => FALSE,
-        'default' => '',
+        'default' => NULL,
       ],
       'timestamp' => [
         'description' => 'Timestamp',

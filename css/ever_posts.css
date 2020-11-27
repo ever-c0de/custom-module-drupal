@@ -86,6 +86,7 @@
   font-size: 27px !important;
 }
 .ever_module__title {
+  text-align: center;
   margin: 20px auto 0;
   padding: 10px;
   width: fit-content;
@@ -157,7 +158,7 @@
   padding: 10px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   max-height: 400px;
   min-height: 200px;
@@ -191,6 +192,11 @@
 /* Adaptive */
 
 @media all and (max-width: 1030px) {
+  .admin_buttons {
+    margin: 0;
+    margin-bottom: 25px;
+    margin-top: 25px;
+  }
   .posts__inner {
     flex-direction: column;
   }
@@ -198,6 +204,7 @@
     align-self: center;
   }
   .content__text {
+    align-items: center;
     max-height: none;
   }
   .user__feedback {
@@ -246,6 +253,9 @@
   }
 }
 @media all and (max-width: 450px) {
+  .admin_buttons {
+    margin-bottom: 25px;
+  }
   .admin_post_delete {
     margin-bottom: 30px;
   }

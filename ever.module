@@ -5,14 +5,13 @@ use Drupal\ever\Controller\EverController;
 use Drupal\file\Entity\File;
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_form_ever_form_alter() for ever_form() update the existing post.
  * @param $form
  * @param FormStateInterface $form_state
  * @param $form_id
- * @param EverController $id
+ * @return mixed
  */
-function ever_form_ever_form_alter(&$form, FormStateInterface $form_state, $form_id)
-{
+function ever_form_ever_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if ($form_id == 'ever_form') {
     $id = $form_state->getBuildInfo();
     if ($id['args'] != FALSE) {
@@ -25,7 +24,7 @@ function ever_form_ever_form_alter(&$form, FormStateInterface $form_state, $form
       $form['email']['#default_value'] = $post[0]->email;
       $form['phone_number']['#default_value'] = $post[0]->tel;
       $form['comment']['#default_value'] = $post[0]->comment;
-// @todo images and update!
+
       if ($post[0]->avatarDir != FALSE) {
         $file = File::load($post[0]->avatarDir);
         $form['avatar_photo']['#default_value'] = [$file->id()];
@@ -37,6 +36,4 @@ function ever_form_ever_form_alter(&$form, FormStateInterface $form_state, $form
     }
   }
   return $form;
-
-
 }
