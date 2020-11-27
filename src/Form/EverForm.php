@@ -281,7 +281,6 @@ class EverForm extends FormBase {
       $avatar = $form_state->getValue('avatar_photo');
       if (count($avatar) !== 0) {
         $file = File::load($avatar[0]);
-        $avatar_path = $file->Url();
         $file->setPermanent();
         $file->save();
         $avatar_id = $avatar[0];
@@ -290,7 +289,6 @@ class EverForm extends FormBase {
       $photo = $form_state->getValue('comment_photo');
       if (count($photo) !== 0) {
         $file = File::load($photo[0]);
-        $photo_path = $file->Url();
         $file->setPermanent();
         $file->save();
         $photo_id = $photo[0];
