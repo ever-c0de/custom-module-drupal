@@ -242,7 +242,6 @@ class EverForm extends FormBase {
    *
    * {@inheritdoc}
    *
-   *
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $id = $form_state->getBuildInfo();

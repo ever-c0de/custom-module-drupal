@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @return
- * Contains \Drupal\ever\Controller\EverController.
- */
-
 namespace Drupal\ever\Controller;
 
 use Drupal;
@@ -105,18 +100,27 @@ class EverController extends ControllerBase {
    * Method for deleting the post.
    *
    * @param int $id
-   *   Take parameter from route file.
+   *   Take parameter from route file for post identification.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   After successful delete redirect user to main page of module.
    */
-  public function postDelete($id) {
+  public function postDelete(int $id) {
     Drupal::database()->delete('ever')->condition('id', $id)->execute();
     Drupal::messenger()->addMessage($this->t('Post was deleted!'));
     return $this->redirect('ever.form');
   }
 
-  public function postUpdate($id) {
+  /**
+   * Method for updating the post.
+   *
+   * @param int $id
+   *   Take parameter from route file for post identification.
+   *
+   * @return array
+   *   Return the selected post with $id.
+   */
+  public function postUpdate(int $id) {
     return Drupal::formBuilder()->getForm('Drupal\ever\Form\EverForm', $id);
   }
 
