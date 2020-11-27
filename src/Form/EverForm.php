@@ -168,7 +168,17 @@ class EverForm extends FormBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Callback for fields validation and messages render.
+   *
+   * Validate fields and return error messages or continue to submit.
+   *
+   * @param array $form
+   *   Gets an array form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   Gets the form_state.
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   Show errors or continue to submit.
    */
   public function ajaxSubmitCallback(array &$form, FormStateInterface $form_state) {
     $errors = $form_state->getErrors();
@@ -195,7 +205,7 @@ class EverForm extends FormBase {
   }
 
   /**
-   * Валидация отправленых данных в форме.
+   * Validate fields with user data.
    *
    * {@inheritdoc}
    */
@@ -228,13 +238,12 @@ class EverForm extends FormBase {
   }
 
   /**
-   * Form submit
+   * Form submit.
    *
    * {@inheritdoc}
-   * @throws EntityStorageException
-   * @throws Exception
+   *
+   *
    */
-  // @todo Finish images style
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $id = $form_state->getBuildInfo();
     if ($id['args'] != TRUE) {
@@ -242,7 +251,7 @@ class EverForm extends FormBase {
       if (count($avatar) !== 0) {
         $file = File::load($avatar[0]);
         $avatar_path = $file->Url();
-        $file->$this->setPermanent();
+        $file->setPermanent();
         $file->save();
         $avatar_id = $avatar[0];
       }
@@ -251,7 +260,7 @@ class EverForm extends FormBase {
       if (count($photo) !== 0) {
         $file = File::load($photo[0]);
         $photo_path = $file->Url();
-        $file->$this->setPermanent();
+        $file->setPermanent();
         $file->save();
         $photo_id = $photo[0];
       }
@@ -274,7 +283,7 @@ class EverForm extends FormBase {
       if (count($avatar) !== 0) {
         $file = File::load($avatar[0]);
         $avatar_path = $file->Url();
-        $file->$this->setPermanent();
+        $file->setPermanent();
         $file->save();
         $avatar_id = $avatar[0];
       }
@@ -283,7 +292,7 @@ class EverForm extends FormBase {
       if (count($photo) !== 0) {
         $file = File::load($photo[0]);
         $photo_path = $file->Url();
-        $file->$this->setPermanent();
+        $file->setPermanent();
         $file->save();
         $photo_id = $photo[0];
       }

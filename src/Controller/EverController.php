@@ -14,11 +14,18 @@ use Drupal\file\Entity\File;
 /**
  * Class EverController.
  *
+ * Implement methods for deletePost() and updatePost().
+ *
  * @package Drupal\ever\Controller
  */
-
 class EverController extends ControllerBase {
 
+  /**
+   * Designed for getting the full styled posts.
+   *
+   * @return array
+   *   Return the posts.
+   */
   public function renderPosts() {
     $posts['posts'] = [
       '#type' => 'inline_template',
@@ -32,11 +39,23 @@ class EverController extends ControllerBase {
     return $posts;
   }
 
+  /**
+   * Method gets the template file content and return it.
+   *
+   * @return false|string
+   *   If TRUE -> return template file content.
+   */
   public function getTemplate() {
     $posts_index = file_get_contents('modules/custom/ever/templates/posts.html.twig');
     return $posts_index;
   }
 
+  /**
+   * Select values from ever database.
+   *
+   * @return mixed
+   *   Return the DB values.
+   */
   public function getDbValues() {
     $db = Drupal::database()
       ->select('ever')
@@ -68,6 +87,12 @@ class EverController extends ControllerBase {
     return $db;
   }
 
+  /**
+   * Statement that check user permission to content.
+   *
+   * @return bool
+   *   Return TRUE if user is admin.
+   */
   public function isAdmin() {
     global $_ever_is_admin;
     if (Drupal::currentUser()->hasPermission('administer site configuration')) {
@@ -76,6 +101,15 @@ class EverController extends ControllerBase {
     return $_ever_is_admin;
   }
 
+  /**
+   * Method for deleting the post.
+   *
+   * @param int $id
+   *   Take parameter from route file.
+   *
+   * @return \Symfony\Component\HttpFoundation\RedirectResponse
+   *   After successful delete redirect user to main page of module.
+   */
   public function postDelete($id) {
     Drupal::database()->delete('ever')->condition('id', $id)->execute();
     Drupal::messenger()->addMessage($this->t('Post was deleted!'));
