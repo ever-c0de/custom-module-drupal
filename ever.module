@@ -11,19 +11,20 @@ use Drupal\file\Entity\File;
  * @param $form_id
  * @param EverController $id
  */
-function ever_form_ever_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function ever_form_ever_form_alter(&$form, FormStateInterface $form_state, $form_id)
+{
   if ($form_id == 'ever_form') {
     $id = $form_state->getBuildInfo();
-    if ($id['args'] != FALSE){
-    $post = \Drupal::database()->select('ever')
-      ->condition('id', $id['args'])
-      ->fields('ever')
-      ->execute()
-      ->fetchAll();
-    $form['name']['#default_value'] = $post[0]->name;
-    $form['email']['#default_value'] = $post[0]->email;
-    $form['phone_number']['#default_value'] = $post[0]->tel;
-    $form['comment']['#default_value'] = $post[0]->comment;
+    if ($id['args'] != FALSE) {
+      $post = Drupal::database()->select('ever')
+        ->condition('id', $id['args'])
+        ->fields('ever')
+        ->execute()
+        ->fetchAll();
+      $form['name']['#default_value'] = $post[0]->name;
+      $form['email']['#default_value'] = $post[0]->email;
+      $form['phone_number']['#default_value'] = $post[0]->tel;
+      $form['comment']['#default_value'] = $post[0]->comment;
 // @todo images and update!
       if ($post[0]->avatarDir != FALSE) {
         $file = File::load($post[0]->avatarDir);

@@ -4,21 +4,40 @@
  * @return
  * Contains \Drupal\ever\Controller\EverController.
  */
+
 namespace Drupal\ever\Controller;
 
+use Drupal;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\Form\ConfigFormBase;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\node\Entity\Node;
 use Drupal\file\Entity\File;
-use TYPO3\PharStreamWrapper\Interceptor\PharMetaDataInterceptor;
 
 
-class EverController extends ControllerBase {
+class EverController extends ControllerBase
+{
 
-  public function getDbValues() {
-    $db = \Drupal::database()
+  public function renderPosts()
+  {
+    $posts['posts'] = [
+      '#type' => 'inline_template',
+      '#template' => $this->getTemplate(),
+      '#context' => [
+        'users' => $this->getDbValues(),
+        'admin' => $this->isAdmin(),
+      ],
+    ];
+    $posts['form'] = Drupal::formBuilder()->getForm('Drupal\ever\Form\EverForm');
+    return $posts;
+  }
+
+  public function getTemplate()
+  {
+    $posts_index = file_get_contents('modules/custom/ever/templates/posts.html.twig');
+    return $posts_index;
+  }
+
+  public function getDbValues()
+  {
+    $db = Drupal::database()
       ->select('ever')
       ->fields('ever', [
         'id',
@@ -36,8 +55,7 @@ class EverController extends ControllerBase {
     foreach ($db as $value) {
       if ($value->avatarDir != NULL) {
         $value->avatarDir = File::load($value->avatarDir)->Url();
-      }
-      else {
+      } else {
         $value->avatarDir = 'http://ever.loc/modules/custom/ever/default_ever/default_logo.jpg';
       }
       if ($value->photoDir != NULL) {
@@ -48,37 +66,23 @@ class EverController extends ControllerBase {
     return $db;
   }
 
-  public function getTemplate() {
-    $posts_index = file_get_contents('modules/custom/ever/templates/posts.html.twig');
-    return $posts_index;
-  }
-
-  public function isAdmin() {
+  public function isAdmin()
+  {
     global $_ever_is_admin;
-    if (\Drupal::currentUser()->hasPermission('administer site configuration')) {
+    if (Drupal::currentUser()->hasPermission('administer site configuration')) {
       $_ever_is_admin = TRUE;
     }
     return $_ever_is_admin;
   }
 
-  public function renderPosts() {
-    $posts['posts'] = [
-      '#type' => 'inline_template',
-      '#template' => $this->getTemplate(),
-      '#context' => [
-        'users' => $this->getDbValues(),
-        'admin' => $this->isAdmin(),
-      ],
-    ];
-    $posts['form'] = \Drupal::formBuilder()->getForm('Drupal\ever\Form\EverForm');
-    return $posts;
-  }
-
-  public function postDelete($id) {
-    \Drupal::database()->delete('ever')->condition('id', $id)->execute();
+  public function postDelete($id)
+  {
+    Drupal::database()->delete('ever')->condition('id', $id)->execute();
     return $this->redirect('ever.form');
   }
-  public function postUpdate($id) {
-    return \Drupal::formBuilder()->getForm('Drupal\ever\Form\EverForm', $id);
+
+  public function postUpdate($id)
+  {
+    return Drupal::formBuilder()->getForm('Drupal\ever\Form\EverForm', $id);
   }
 }
