@@ -25,8 +25,14 @@ function ever_form_ever_form_alter(&$form, \Drupal\Core\Form\FormStateInterface 
     $form['phone_number']['#default_value'] = $post[0]->tel;
     $form['comment']['#default_value'] = $post[0]->comment;
 // @todo images and update!
-    $form['avatar_photo']['#default_value'] = $post[0]->File::load($post->avatarDir)->Url();
-    $form['comment_photo']['#default_value'] = $post[0]->File::load($post->photoDir)->Url();
+      if ($post[0]->avatarDir != FALSE) {
+        $file = File::load($post[0]->avatarDir);
+        $form['avatar_photo']['#default_value'] = [$file->id()];
+      }
+      if ($post[0]->photoDir != FALSE) {
+        $file = File::load($post[0]->photoDir);
+        $form['comment_photo']['#default_value'] = [$file->id()];
+      }
     }
   }
   return $form;
