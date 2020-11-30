@@ -6,15 +6,14 @@
  */
 function ever_schema() {
 
-  # Database example
-  $schema['ever'] = [                   // Название таблицы
-    'description' => 'Database for ever module',            // Описание таблицы
-    'fields' => [                              // Массив с колонками таблицы
-      'id' => [                                // Название колонки
-        'description' => 'ID',                      // Описание колонки
-        'type' => 'serial',                         // Тип данных
-        'unsigned' => TRUE,                         // Unsigned, по умолчанию FALSE
-        'not null' => TRUE,                         // Проверка на 0
+  $schema['ever'] = [
+    'description' => 'Database for ever module',
+    'fields' => [
+      'id' => [
+        'description' => 'ID',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
       ],
       'name' => [
         'description' => 'User Name',
