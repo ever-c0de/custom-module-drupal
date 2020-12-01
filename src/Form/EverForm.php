@@ -8,6 +8,7 @@ use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 
 /**
@@ -186,8 +187,9 @@ class EverForm extends FormBase {
 
     if (count($errors) === 0) {
       Drupal::messenger()->deleteByType('error');
-      $url = Url::fromRoute('page_route');
-      $ajax_response->addCommand(new RedirectCommand($url->toString()));
+      $url = Url::fromRoute('ever.form');
+      $command = new RedirectCommand($url->toString());
+      $ajax_response->addCommand($command);
     }
     else {
       $message = [

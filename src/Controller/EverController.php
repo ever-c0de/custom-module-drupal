@@ -72,7 +72,7 @@ class EverController extends ControllerBase {
         $value->avatarDir = File::load($value->avatarDir)->Url();
       }
       else {
-        $value->avatarDir = 'http://ever.loc/modules/custom/ever/default_ever/default_logo.jpg';
+        $value->avatarDir = 'modules/custom/ever/default_ever/default_logo.jpg';
       }
       if ($value->photoDir != NULL) {
         $value->photoDir = File::load($value->photoDir)->Url();
