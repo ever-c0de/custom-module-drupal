@@ -186,7 +186,8 @@ class EverForm extends FormBase {
 
     if (count($errors) === 0) {
       Drupal::messenger()->deleteByType('error');
-      $ajax_response->addCommand(new RedirectCommand('http://ever.loc/module-page'));
+      $url = Url::fromRoute('page_route');
+      $ajax_response->addCommand(new RedirectCommand($url->toString()));
     }
     else {
       $message = [
